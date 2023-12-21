@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "structure.h"
+#include "transit_seconde.c"
 
 #define RESET   "\x1b[0m"
 #define BLACK   "\x1b[30m"

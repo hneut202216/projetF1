@@ -1,5 +1,6 @@
-#include <stdlib.h>
+
 #include <stdio.h>
+#include <string.h>
 
 
 void lap_time_format(int lap_time){
@@ -15,4 +16,3 @@ void sector_time_format(int sector_time){
 
     printf("%02d.%03d", s, ms);
 }
-
