@@ -93,7 +93,7 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
         }
         printf("+");
     }
-    printf("\n");
+    printf("\n%s",RESET);
         
 }
 void afficherDonnees(struct Pilote pilotes[], int lignes) {

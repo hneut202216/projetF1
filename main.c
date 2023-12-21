@@ -107,51 +107,74 @@ int main(int argc, char **argv) {
     int p_id;
     // printf("shmid = %d",shmid);
     // struct Pilote listeAffichage[20];
-    for (int i = 0; i < indicePilote; i++)
-    {
-        int totalF = 0;
-        int a = 0;
-        usleep(1000000);
-        srand(time(NULL));
-        p_id = fork();
-        if (p_id == 0)
-        {
-            while (a < 3)
-        {
-
-            int random = rand() % 20001;
-            int finaleR = 25000 + random;
-            totalF += finaleR;
-            if (listePilotes[21].tempsTour[a] == 0 || listePilotes[21].tempsTour[a] > finaleR){
-                listePilotes[21].tempsTour[a] = finaleR;
+    int nombreQ = 0;
+    int tempsEnMoins = 0;
+    int accessQ = 0;
+    for(int i = 0; i<3;i++){
+        while(accessQ == 1){
+            printf("écrivez 1 si vous voulez commencer la qualification %d",i);
+            scanf("%d",&accessQ);
             }
-            listePilotes[i].tempsTour[a] = finaleR;
-            a++;
-        }
-            listePilotes[i].temps = totalF;
-             if (listePilotes[21].temps > listePilotes[i].temps){
-                listePilotes[21].temps = totalF;
-            
+        
+            for(int i = 0; i < 20 - nombreQ ; i++){
+                        listePilotes[i].temps = 0;
+                        listePilotes[i].tempsTour[0] = 0;
+                        listePilotes[i].tempsTour[1] = 0;
+                        listePilotes[i].tempsTour[2] = 0;
             }
-            return 0;
-        }
-        else if (p_id < 0)
+        for (int i = 0; i < 6 - tempsEnMoins; i++)
         {
-            printf("pas bon erreur");
-            return -1;
-        }
-        srand(time(NULL));
+            for (int i = 0; i < indicePilote - nombreQ; i++){
+            // sleep(10);
+            int totalF = 0;
+            int a = 0;
+            srand(time(NULL));
+            usleep(1000000);
+            p_id = fork();
+            if (p_id == 0){
+                while (a < 3){ 
+                int random = rand() % 20001;
+                int finaleR = 25000 + random;
+                totalF += finaleR;
+                if (listePilotes[21].tempsTour[a] > finaleR || listePilotes[21].tempsTour[a] == 0){listePilotes[21].tempsTour[a] = finaleR;}
+                if (listePilotes[i].tempsTour[a] > finaleR || listePilotes[i].tempsTour[a] == 0){listePilotes[i].tempsTour[a] = finaleR;}
+                //printf("%d ms        ",finaleR);
+                a++;
+                
+            }
+                if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
+                if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
+                return 0;
+            }
 
+            else if (p_id < 0)
+            {
+                printf("pas bon erreur");
+                return -1;
+            }
+            else
+            {
+                
+                char result[3000];
+            }
         while(p_id == waitpid(-1,NULL,0)){
-                if(errno == ECHILD){
-                        break;
-                }
+            if(errno == ECHILD){
+                break;
+            }
         }
         qsort(listePilotes, indicePilote+1, sizeof(struct Pilote), compare);
-        afficherDonnees(listePilotes, 20);
-
+        afficherDonnees(listePilotes, 20-nombreQ);
+        
         }
+        printf("Qualif : %d",i);
+        }
+        if(nombreQ < 10){nombreQ+=5;}
+        tempsEnMoins +=2;
         afficheMeilleurTemps(listePilotes,2);
+    }
+   afficherDonnees(listePilotes,20);
+   printf("Qualif terminé");
+   shmdt(listePilotes);
 
-    shmdt(listePilotes);
+   
 }
