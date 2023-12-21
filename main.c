@@ -14,6 +14,11 @@
 #include "structure.h"
 #include "afiichage.c"
 
+void remiseAZero(struct Pilote *pilotes, int taille) {
+    for (int i = 0; i < taille; ++i) {
+        memset(&pilotes[i], 0, sizeof(struct Pilote));
+    }
+}
 
 int compare(const void *a, const void *b) {
     struct Pilote *piloteA = (struct Pilote *)a;
@@ -81,6 +86,7 @@ int main(int argc, char **argv) {
     struct Pilote *listePilotes = shmat(shmid, 0, 0);
 
     fgets(listeTempPilote, tailleListePilote, filePilote);
+    remiseAZero(listePilotes,21);
     int indicePilote = 0;
     int trash;
     while (fgets(listeTempPilote, tailleListePilote, filePilote) != NULL)
@@ -116,10 +122,17 @@ int main(int argc, char **argv) {
             int random = rand() % 20001;
             int finaleR = 25000 + random;
             totalF += finaleR;
+            if (listePilotes[21].tempsTour[a] == 0 || listePilotes[21].tempsTour[a] > finaleR){
+                listePilotes[21].tempsTour[a] = finaleR;
+            }
             listePilotes[i].tempsTour[a] = finaleR;
             a++;
         }
             listePilotes[i].temps = totalF;
+             if (listePilotes[21].temps > listePilotes[i].temps){
+                listePilotes[21].temps = totalF;
+            
+            }
             return 0;
         }
         else if (p_id < 0)
@@ -138,6 +151,7 @@ int main(int argc, char **argv) {
         afficherDonnees(listePilotes, 20);
 
         }
+        afficheMeilleurTemps(listePilotes,2);
 
     shmdt(listePilotes);
 }
