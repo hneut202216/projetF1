@@ -167,16 +167,17 @@ void afficherDonnees(struct Pilote pilotes[], int lignes) {
             sector_time_format(pilotes[i].tempsTour[j]);
             printf("  |");
         }
+
         lap_time_format(pilotes[i].temps);
         printf("      |");
         if(i == 0){sector_time_format(0);
-                    printf("      |%s\n",RESET);}
+                    printf("     |%s\n",RESET);}
         else if(pilotes[i].temps == 0){lap_time_format(pilotes[i-1].temps);
                     printf("    |%s\n",RESET);}
         else{
             int diff = pilotes[i-1].temps - pilotes[i].temps;
             sector_time_format(-diff);
-            printf("      |%s\n",RESET);}
+            printf("     |%s\n",RESET);}
 
         if (i < lignes - 1) {
             printf("+");

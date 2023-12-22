@@ -1,4 +1,3 @@
- 
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -24,10 +23,17 @@ void remiseAZero(struct Pilote *pilotes, int taille) {
 int compare(const void *a, const void *b) {
     struct Pilote *piloteA = (struct Pilote *)a;
     struct Pilote *piloteB = (struct Pilote *)b;
-    if(piloteA->temps == 0){return 0;}
-    if(piloteB->temps == 0){return 0;}
-
-    return (piloteA->temps - piloteB->temps);
+    
+    // Comparaison par le nombre de tours
+    if (piloteA->nbrTour != piloteB->nbrTour) {
+        return piloteA->nbrTour - piloteB->nbrTour;
+    } else {
+        // En cas d'égalité du nombre de tours, comparer par le temps
+        if (piloteA->temps == 0 || piloteB->temps == 0) {
+            return 0; // Gérer le cas où le temps est nul
+        }
+        return piloteA->temps - piloteB->temps;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -119,18 +125,7 @@ int main(int argc, char **argv) {
     int accessQ = 0;
     for(int j = 0; j<3;j++){
         
-            for(int k = 0; k < 15-nombreQ ; k++){
-                        listePilotes[k].temps = 0;
-                        listePilotes[k].tempsTour[0] = 0;
-                        listePilotes[k].tempsTour[1] = 0;
-                        listePilotes[k].tempsTour[2] = 0;
-
-            }
-            listePilotes[21].temps = 0;
-            listePilotes[21].tempsTour[0] = 0;
-            listePilotes[21].tempsTour[1] = 0;
-            listePilotes[21].tempsTour[2] = 0;
-        for (int i = 0; i < 18 - tempsEnMoins; i++)
+        for (int o = 0; o < 18 - tempsEnMoins; o++)
         {
             for (int i = 0; i < indicePilote - nombreQ; i++){
             // sleep(10);
@@ -193,9 +188,73 @@ int main(int argc, char **argv) {
 
             }
             accessQ = 0;
+            for(int k = 0; k < 15-nombreQ ; k++){
+                        listePilotes[k].temps = 0;
+                        listePilotes[k].tempsTour[0] = 0;
+                        listePilotes[k].tempsTour[1] = 0;
+                        listePilotes[k].tempsTour[2] = 0;
+
+            }
+            listePilotes[21].temps = 0;
+            listePilotes[21].tempsTour[0] = 0;
+            listePilotes[21].tempsTour[1] = 0;
+            listePilotes[21].tempsTour[2] = 0;
     }
    afficherDonnees(listePilotes,20);
    printf("Qualif terminé\n");
+
+    
+        for (int i = 0; i < 20; i++){
+            for (int i = 0; i < indicePilote - nombreQ; i++){
+                // sleep(10);
+                int totalF = 0;
+                int a = 0;
+                //usleep(1000000);
+                p_id = fork();
+                if (p_id == 0){
+                    srand(time(NULL)*getpid());
+                    sem_wait(&semaphore);
+                    while (a < 3){ 
+                    int random = rand() % 20001;
+                    int finaleR = 25000 + random;
+                    totalF += finaleR;
+                    
+                    if (listePilotes[21].tempsTour[a] > finaleR || listePilotes[21].tempsTour[a] == 0){listePilotes[21].tempsTour[a] = finaleR;}
+                    if (listePilotes[i].tempsTour[a] > finaleR || listePilotes[i].tempsTour[a] == 0){listePilotes[i].tempsTour[a] = finaleR;}
+                    //printf("%d ms        ",finaleR);
+                    a++;
+                    }
+                    if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
+                    listePilotes[i].temps += totalF;
+                    listePilotes[i].nbrTour += 1;
+                    sem_post(&semaphore);
+                    return 0;
+                }
+
+                else if (p_id < 0)
+                {
+                    printf("pas bon erreur");
+                    return -1;
+                }
+                else
+                {
+                    sem_wait(&semaphore);
+
+                    sem_post(&semaphore);
+                    
+                }
+            while(p_id == waitpid(-1,NULL,0)){
+                if(errno == ECHILD){
+                    break;
+                }
+            }
+            qsort(listePilotes, 20, sizeof(struct Pilote), compare);
+            afficherDonnees(listePilotes, 20);
+            afficheMeilleurTemps(listePilotes, 2);
+            
+            }
+        }
+
    sem_destroy(&semaphore);
    shmdt(listePilotes);
 

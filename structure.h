@@ -22,6 +22,7 @@ struct Pilote
     char nation[50];
     int temps;
     int tempsTour[3];
+    int nbrTour;
 };
 
 #endif
