@@ -10,6 +10,7 @@
 #include <sys/shm.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <semaphore.h>
 
 #include "structure.h"
 #include "afiichage.c"
@@ -105,16 +106,25 @@ int main(int argc, char **argv) {
     }
     // printf(" test : %c",listePilotes[0].nom); pq pas bon ?
     int p_id;
+    sem_t semaphore;
     // printf("shmid = %d",shmid);
     // struct Pilote listeAffichage[20];
+    if (sem_init(&semaphore, 1, 1) == -1)
+    {
+        perror("Initialisation du sémaphore échoué");
+        exit(EXIT_FAILURE);
+    }
     int nombreQ = 0;
     int tempsEnMoins = 0;
     int accessQ = 0;
     for(int i = 0; i<3;i++){
-        while(accessQ == 1){
-            printf("écrivez 1 si vous voulez commencer la qualification %d",i);
+        while(accessQ != 1){
+            
+            printf("écrivez 1 si vous voulez commencer la qualification %d :",i+1);
             scanf("%d",&accessQ);
+
             }
+            accessQ = 0;
         
             for(int i = 0; i < 20 - nombreQ ; i++){
                         listePilotes[i].temps = 0;
@@ -128,22 +138,27 @@ int main(int argc, char **argv) {
             // sleep(10);
             int totalF = 0;
             int a = 0;
-            srand(time(NULL));
-            usleep(1000000);
+            //usleep(1000000);
             p_id = fork();
             if (p_id == 0){
+                srand(time(NULL)*getpid());
+                sem_wait(&semaphore);
                 while (a < 3){ 
                 int random = rand() % 20001;
                 int finaleR = 25000 + random;
                 totalF += finaleR;
+                
                 if (listePilotes[21].tempsTour[a] > finaleR || listePilotes[21].tempsTour[a] == 0){listePilotes[21].tempsTour[a] = finaleR;}
                 if (listePilotes[i].tempsTour[a] > finaleR || listePilotes[i].tempsTour[a] == 0){listePilotes[i].tempsTour[a] = finaleR;}
                 //printf("%d ms        ",finaleR);
                 a++;
+
                 
-            }
+                
+                }
                 if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
                 if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
+                sem_post(&semaphore);
                 return 0;
             }
 
@@ -154,8 +169,10 @@ int main(int argc, char **argv) {
             }
             else
             {
+                 sem_wait(&semaphore);
+
+                sem_post(&semaphore);
                 
-                char result[3000];
             }
         while(p_id == waitpid(-1,NULL,0)){
             if(errno == ECHILD){
@@ -174,6 +191,7 @@ int main(int argc, char **argv) {
     }
    afficherDonnees(listePilotes,20);
    printf("Qualif terminé");
+   sem_destroy(&semaphore);
    shmdt(listePilotes);
 
    
