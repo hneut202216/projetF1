@@ -117,22 +117,28 @@ int main(int argc, char **argv) {
     int nombreQ = 0;
     int tempsEnMoins = 0;
     int accessQ = 0;
-    for(int i = 0; i<3;i++){
+    for(int j = 0; j<3;j++){
         while(accessQ != 1){
+            printf("%d\n",20-nombreQ);
             
-            printf("écrivez 1 si vous voulez commencer la qualification %d :",i+1);
+            printf("écrivez 1 si vous voulez commencer la qualification %d :",j+1);
             scanf("%d",&accessQ);
 
             }
             accessQ = 0;
         
-            for(int i = 0; i < 20 - nombreQ ; i++){
-                        listePilotes[i].temps = 0;
-                        listePilotes[i].tempsTour[0] = 0;
-                        listePilotes[i].tempsTour[1] = 0;
-                        listePilotes[i].tempsTour[2] = 0;
+            for(int k = 0; k < 15-nombreQ ; k++){
+                        listePilotes[k].temps = 0;
+                        listePilotes[k].tempsTour[0] = 0;
+                        listePilotes[k].tempsTour[1] = 0;
+                        listePilotes[k].tempsTour[2] = 0;
+
             }
-        for (int i = 0; i < 6 - tempsEnMoins; i++)
+            listePilotes[21].temps = 0;
+            listePilotes[21].tempsTour[0] = 0;
+            listePilotes[21].tempsTour[1] = 0;
+            listePilotes[21].tempsTour[2] = 0;
+        for (int i = 0; i < 18 - tempsEnMoins; i++)
         {
             for (int i = 0; i < indicePilote - nombreQ; i++){
             // sleep(10);
@@ -179,18 +185,18 @@ int main(int argc, char **argv) {
                 break;
             }
         }
-        qsort(listePilotes, indicePilote+1, sizeof(struct Pilote), compare);
+        qsort(listePilotes, 20-nombreQ, sizeof(struct Pilote), compare);
         afficherDonnees(listePilotes, 20-nombreQ);
         
         }
-        printf("Qualif : %d",i);
+        printf("Qualif : %d",j+1);
         }
         if(nombreQ < 10){nombreQ+=5;}
         tempsEnMoins +=2;
         afficheMeilleurTemps(listePilotes,2);
     }
    afficherDonnees(listePilotes,20);
-   printf("Qualif terminé");
+   printf("Qualif terminé\n");
    sem_destroy(&semaphore);
    shmdt(listePilotes);
 
