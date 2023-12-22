@@ -118,14 +118,6 @@ int main(int argc, char **argv) {
     int tempsEnMoins = 0;
     int accessQ = 0;
     for(int j = 0; j<3;j++){
-        while(accessQ != 1){
-            printf("%d\n",20-nombreQ);
-            
-            printf("écrivez 1 si vous voulez commencer la qualification %d :",j+1);
-            scanf("%d",&accessQ);
-
-            }
-            accessQ = 0;
         
             for(int k = 0; k < 15-nombreQ ; k++){
                         listePilotes[k].temps = 0;
@@ -194,6 +186,13 @@ int main(int argc, char **argv) {
         if(nombreQ < 10){nombreQ+=5;}
         tempsEnMoins +=2;
         afficheMeilleurTemps(listePilotes,2);
+        while(accessQ != 1){
+            
+            printf("écrivez 1 si vous voulez terminer la qualification %d :",j+1);
+            scanf("%d",&accessQ);
+
+            }
+            accessQ = 0;
     }
    afficherDonnees(listePilotes,20);
    printf("Qualif terminé\n");

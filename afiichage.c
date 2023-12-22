@@ -99,9 +99,9 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
 void afficherDonnees(struct Pilote pilotes[], int lignes) {
 	system("clear");
 
-    int colonnes = 6; // Nombre de colonnes
+    int colonnes = 7; // Nombre de colonnes
     int largeurs[colonnes];
-	char* titres[] = {"Classement", "Nom du Pilote", "Temps 1", "Temps 2", "Temps 3", "Temps du tour"};
+	char* titres[] = {"Classement", "Nom du Pilote", "Temps 1", "Temps 2", "Temps 3", "Temps du tour","Difference"};
     for (int j = 0; j < colonnes; ++j) {
         largeurs[j] = strlen(titres[j]);
     }
@@ -168,7 +168,15 @@ void afficherDonnees(struct Pilote pilotes[], int lignes) {
             printf("  |");
         }
         lap_time_format(pilotes[i].temps);
-        printf("      |%s\n",RESET);
+        printf("      |");
+        if(i == 0){sector_time_format(0);
+                    printf("      |%s\n",RESET);}
+        else if(pilotes[i].temps == 0){lap_time_format(pilotes[i-1].temps);
+                    printf("    |%s\n",RESET);}
+        else{
+            int diff = pilotes[i-1].temps - pilotes[i].temps;
+            sector_time_format(-diff);
+            printf("      |%s\n",RESET);}
 
         if (i < lignes - 1) {
             printf("+");
