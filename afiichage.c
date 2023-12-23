@@ -28,25 +28,21 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
     int colonnes = 4;
     int largeurs[colonnes];
     char* titres[] = {"Meilleur temps" , "Meilleurs Secteur 1", "Meilleurs Secteur 2" , "Meilleurs Secteur 3" };
-    //char* repTemps[] = { pilotes[21].temps,pilotes[21].tempsTour[1],pilotes[21].tempsTour[2],pilotes[21].tempsTour[3]};
+    
     for(int j = 0; j < colonnes; ++j){
         largeurs[j] = strlen(titres[j]);
-    }
-    for (int i = 0; i < lignes; ++i) {
-        if (strlen(pilotes[i].nom) > largeurs[1]) {
-            largeurs[1] = strlen(pilotes[i].nom);
-        }
+    } 
         for (int j = 0; j < 3; ++j) {
-            int longueur = snprintf(NULL, 0, "%d", pilotes[i].tempsTour[j]);
-            if (longueur > largeurs[j + 2]) {
-                largeurs[j + 2] = longueur;
+            int longueur = snprintf(NULL, 0, "%d", pilotes[21].tempsTour[j]);
+            if (longueur > largeurs[j+1]) {
+                largeurs[j+1] = longueur;
             }
         }
-        int longueur = snprintf(NULL, 0, "%d", pilotes[i].temps);
-        if (longueur > largeurs[4]) {
-            largeurs[4] = longueur;
+        int longueur = snprintf(NULL, 0, "%d", pilotes[21].temps);
+        if (longueur > largeurs[0]) {
+            largeurs[1] = longueur;
         }
-    }
+    
 
         printf("+");
     for (int j = 0; j < colonnes; ++j) {
@@ -73,15 +69,19 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
     printf("\n");
 
     
+    char* bestTemps = lap_time_format(pilotes[21].temps);
+    printf("|%s",bestTemps);
+    for(int i = 0;i< largeurs[0] - strlen(bestTemps)+1; i++){printf(" ");}
+    char* bestT1 = sector_time_format(pilotes[21].tempsTour[0]);
+    printf("|%s",bestT1);
+    for(int i = 0;i< largeurs[1] - strlen(bestT1)+1; i++){printf(" ");}
+    char* bestT2 = sector_time_format(pilotes[21].tempsTour[1]);
+    printf("|%s",bestT2);
+    for(int i = 0;i< largeurs[2] - strlen(bestT2)+1; i++){printf(" ");}
+    char* bestT3 = sector_time_format(pilotes[21].tempsTour[2]);
+    printf("|%s",bestT3);
+    for(int i = 0;i< largeurs[3] - strlen(bestT3)+1; i++){printf(" ");}
     printf("|");
-    lap_time_format(pilotes[21].temps);
-    printf("       |"),
-    sector_time_format(pilotes[21].tempsTour[0]);
-    printf("              |");
-    sector_time_format(pilotes[21].tempsTour[1]);
-    printf("              |");
-    sector_time_format(pilotes[21].tempsTour[2]);
-    printf("              |");
     
     printf("\n");
 
@@ -99,12 +99,19 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
 void afficherDonnees(struct Pilote pilotes[], int lignes) {
 	system("clear");
 
-    int colonnes = 7; // Nombre de colonnes
+    int colonnes = 8; // Nombre de colonnes
     int largeurs[colonnes];
-	char* titres[] = {"Classement", "Nom du Pilote", "Temps 1", "Temps 2", "Temps 3", "Temps du tour","Difference"};
+	char* titres[] = {"Classement", "Nom du Pilote", "Temps 1", "Temps 2", "Temps 3", "Temps du tour","Difference","nbr Tour"};
     for (int j = 0; j < colonnes; ++j) {
         largeurs[j] = strlen(titres[j]);
     }
+    /*int maxTemps = strlen(titres[5]);
+    for(int i = 0; i< lignes ; i++){
+        
+        int longueurTemps = strlen(pilotes[i].temps);
+
+        if (longueurTemps > maxTemps) maxTemps = longueurTemps;
+    }*/
 
     for (int i = 0; i < lignes; ++i) {
         if (strlen(pilotes[i].nom) > largeurs[1]) {
@@ -116,9 +123,13 @@ void afficherDonnees(struct Pilote pilotes[], int lignes) {
                 largeurs[j + 2] = longueur;
             }
         }
-        int longueur = snprintf(NULL, 0, "%d", pilotes[i].temps);
-        if (longueur > largeurs[4]) {
-            largeurs[4] = longueur;
+        int longueurT = snprintf(NULL, 0, "%d", pilotes[i].temps);
+        if (longueurT > largeurs[5]) {
+            largeurs[5] = longueurT;
+        }
+        int longueurN = snprintf(NULL, 0, "%d", pilotes[i].nbrTour);
+        if (longueurN > largeurs[7]) {
+            largeurs[7] = longueurN;
         }
     }
 
@@ -164,21 +175,41 @@ void afficherDonnees(struct Pilote pilotes[], int lignes) {
         printf("%-*d |", largeurs[0], i+1 );
         printf("%-*s |", largeurs[1], pilotes[i].nom);
         for (int j = 0; j < 3; ++j) {
-            sector_time_format(pilotes[i].tempsTour[j]);
-            printf("  |");
+
+            char* tempsTour = sector_time_format(pilotes[i].tempsTour[j]);
+            printf("%s",tempsTour);
+            for(int i = 0;i< largeurs[j+2] - strlen(tempsTour)+1; i++){printf(" ");}
+            printf("|");
         }
 
-        lap_time_format(pilotes[i].temps);
-        printf("      |");
-        if(i == 0){sector_time_format(0);
-                    printf("     |%s\n",RESET);}
-        else if(pilotes[i].temps == 0){lap_time_format(pilotes[i-1].temps);
-                    printf("    |%s\n",RESET);}
-        else{
-            int diff = pilotes[i-1].temps - pilotes[i].temps;
-            sector_time_format(-diff);
-            printf("     |%s\n",RESET);}
+        char* temps = lap_time_format(pilotes[i].temps);
+        printf("%s",temps);
+        for(int i = 0;i< largeurs[5] - strlen(temps)+1; i++){printf(" ");}
+        printf("|");
 
+        if(i == 0){char* diff = sector_time_format(0);
+                    printf("%s",diff);
+                    for(int i = 0; i < largeurs[6] - strlen(diff)+1;i++){printf(" ");}
+                    printf("|");}
+        
+        else if(pilotes[i].temps == 0){char* diff = lap_time_format(pilotes[i-1].temps);
+                    printf("%s",diff);
+                   for(int i = 0; i < largeurs[6] - strlen(diff)+1;i++){printf(" ");}
+                    printf("|");
+                   }
+        
+        else{
+            int diffTemps = pilotes[i-1].temps - pilotes[i].temps;
+            char* diff = sector_time_format(-diffTemps);
+            printf("%s",diff);
+            for(int i = 0; i < largeurs[6] - strlen(diff)+1;i++){printf(" ");}
+            printf("|");}
+        
+        printf("%d",pilotes[i].nbrTour);
+        char str_nbrTour[20]; 
+        sprintf(str_nbrTour, "%d", pilotes[i].nbrTour);
+        for(int j = 0;j< largeurs[7] - strlen(str_nbrTour)+1; j++){printf(" ");}
+        printf("|%s\n",RESET);
         if (i < lignes - 1) {
             printf("+");
             for (int j = 0; j < colonnes; ++j) {
@@ -200,6 +231,7 @@ void afficherDonnees(struct Pilote pilotes[], int lignes) {
     }
     printf("\n");
 }
+
 
 void afficheCourse(struct Course course) {
     int num = course.num;

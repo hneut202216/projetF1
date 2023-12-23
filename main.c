@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
     int nombreQ = 0;
     int tempsEnMoins = 0;
     int accessQ = 0;
-   for(int j = 0; j<3;j++){
+    for(int j = 0; j<3;j++){
         
         for (int o = 0; o < 18 - tempsEnMoins; o++)
         {
@@ -205,7 +205,7 @@ int main(int argc, char **argv) {
 
     
         for (int i = 0; i < 20; i++){
-            for (int i = 0; i < indicePilote ; i++){
+            for (int i = 0; i < indicePilote; i++){
                 // sleep(10);
                 int totalF = 0;
                 int a = 0;
@@ -248,12 +248,12 @@ int main(int argc, char **argv) {
                     break;
                 }
             }
+            
+            
             }
-
             qsort(listePilotes, 20, sizeof(struct Pilote), compare);
             afficherDonnees(listePilotes, 20);
             afficheMeilleurTemps(listePilotes, 2);
-            
         }
 
    sem_destroy(&semaphore);
