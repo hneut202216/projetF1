@@ -122,8 +122,44 @@ int main(int argc, char **argv) {
     }
     int nombreQ = 0;
     int tempsEnMoins = 0;
-    int accessQ = 0;
-    for(int j = 0; j<3;j++){
+    int choix;
+    int jqualif =0;
+    printf("choisissez un chiffre entre :\n1 : pour commencer avec la quallification 1\n2 : pour commencer avec la quallification 2\n3 : pour commencer avec la quallification 3\n4 : pour commencer la course\n Mettez un autre chiffre si vous voulez Quitter.\nVotre choix : ");
+    scanf("%d",&choix);
+    switch(choix){
+        case 1:
+            nombreQ = 0;
+            tempsEnMoins =0;
+            jqualif =0;
+            break;
+        case 2:
+            nombreQ = 5;
+            tempsEnMoins =2;
+            jqualif =1;
+            break;
+        case 3:
+            nombreQ = 10;
+            tempsEnMoins =4;
+            jqualif =2;
+            break;
+        case 4 :
+            jqualif = 3;
+            break;
+        default:
+            return -1;
+
+
+    }
+    //int accessQ = 0;
+    for(int j = jqualif; j<3;j++){
+        //accessQ = 0;
+            for(int k = 0; k < 15-nombreQ ; k++){
+                        listePilotes[k].temps = 0;
+                        listePilotes[k].tempsTour[0] = 0;
+                        listePilotes[k].tempsTour[1] = 0;
+                        listePilotes[k].tempsTour[2] = 0;
+
+            }
         
         for (int o = 0; o < 18 - tempsEnMoins; o++)
         {
@@ -176,32 +212,31 @@ int main(int argc, char **argv) {
         afficherDonnees(listePilotes, 20-nombreQ);
         
         }
-        printf("Qualif : %d",j+1);
+        //printf("Qualif : %d",j+1);
         }
         if(nombreQ < 10){nombreQ+=5;}
         tempsEnMoins +=2;
         afficheMeilleurTemps(listePilotes,2);
-        while(accessQ != 1){
+        /*while(accessQ != 1){
             
             printf("écrivez 1 si vous voulez terminer la qualification %d :",j+1);
             scanf("%d",&accessQ);
 
-            }
-            accessQ = 0;
-            for(int k = 0; k < 15-nombreQ ; k++){
-                        listePilotes[k].temps = 0;
-                        listePilotes[k].tempsTour[0] = 0;
-                        listePilotes[k].tempsTour[1] = 0;
-                        listePilotes[k].tempsTour[2] = 0;
-
-            }
+            }*/
+            
             listePilotes[21].temps = 0;
             listePilotes[21].tempsTour[0] = 0;
             listePilotes[21].tempsTour[1] = 0;
             listePilotes[21].tempsTour[2] = 0;
+            sleep(4);
     }
    afficherDonnees(listePilotes,20);
    printf("Qualif terminé\n");
+   /*printf("écrivez 1 si vous voulez terminer la qualification la course:");
+            scanf("%d",&accessQ);
+
+            
+            accessQ = 0;*/
 
     
         for (int i = 0; i < 20; i++){
@@ -236,13 +271,10 @@ int main(int argc, char **argv) {
                     printf("pas bon erreur");
                     return -1;
                 }
-                else
-                {
                     sem_wait(&semaphore);
 
                     sem_post(&semaphore);
                     
-                }
             while(p_id == waitpid(-1,NULL,0)){
                 if(errno == ECHILD){
                     break;
