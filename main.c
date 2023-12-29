@@ -404,7 +404,7 @@ int main(int argc, char **argv) {
             
         }
         
-        for(int i = 0 ; i<20 ;i++){
+        /*for(int i = 0 ; i<20 ;i++){
 
             
             printf("coucou");
@@ -420,7 +420,7 @@ int main(int argc, char **argv) {
             if(i = 9){listePilotes[i].point += 1;}
             //if((i <= 9 )&& (listePilotes[21].temps = listePilotes[i].temps)){listePilotes[i].point += 1;}
             if((i>9)){listePilotes[i].point += 0;}
-        }
+        }*/
         affichePoint(listePilotes,20);
 
    sem_destroy(&semaphore);
