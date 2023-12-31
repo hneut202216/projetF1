@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
             // sleep(10);
             int totalF = 0;
             int a = 0;
-            //usleep(1000000);
+            usleep(500000);
             p_id = fork();
             if (p_id == 0){
                 srand(time(NULL)*getpid());
@@ -209,7 +209,7 @@ int main(int argc, char **argv) {
             }
         }
         qsort(listePilotes, 20-nombreQ, sizeof(struct Pilote), compare);
-        afficherDonnees(listePilotes, 20-nombreQ);
+        afficherDonnees(listePilotes, 20-nombreQ,i+3);
         
         }
         //printf("Qualif : %d",j+1);
@@ -230,7 +230,7 @@ int main(int argc, char **argv) {
             listePilotes[21].tempsTour[2] = 0;
             sleep(4);
     }
-   afficherDonnees(listePilotes,20);
+   afficherDonnees(listePilotes,20,6);
    printf("Qualif terminé\n");
    /*printf("écrivez 1 si vous voulez terminer la qualification la course:");
             scanf("%d",&accessQ);
@@ -239,12 +239,12 @@ int main(int argc, char **argv) {
             accessQ = 0;*/
 
     
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 2; i++){
             for (int i = 0; i < indicePilote; i++){
                 // sleep(10);
                 int totalF = 0;
                 int a = 0;
-                //usleep(1000000);
+                usleep(500000);
                 p_id = fork();
                 if (p_id == 0){
                     srand(time(NULL)*getpid());
@@ -284,9 +284,13 @@ int main(int argc, char **argv) {
             
             }
             qsort(listePilotes, 20, sizeof(struct Pilote), compare);
-            afficherDonnees(listePilotes, 20);
+            afficherDonnees(listePilotes, 20,6);
             afficheMeilleurTemps(listePilotes, 2);
         }
+
+    for(int i = 0;i<10;i++){
+        printf("%d , %d  \n", i , listePilotes[21].temps);
+    }
 
    sem_destroy(&semaphore);
    shmdt(listePilotes);
