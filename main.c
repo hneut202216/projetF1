@@ -350,7 +350,7 @@ int main(int argc, char **argv) {
             accessQ = 0;*/
 
     
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 2; i++){
             for (int i = 0; i < indicePilote; i++){
                 // sleep(10);
                 int totalF = 0;
@@ -400,27 +400,23 @@ int main(int argc, char **argv) {
             afficherDonnees(listePilotes, 20,6);
             
             afficheMeilleurTemps(listePilotes, 2);
-            affichePoint(listePilotes,20);
             
         }
         
-        /*for(int i = 0 ; i<20 ;i++){
-
-            
-            printf("coucou");
-            if(i = 0){listePilotes[i].point += 25;}
-            if(i = 1){listePilotes[i].point += 18;}
-            if(i = 2){listePilotes[i].point += 15;}
-            if(i = 3){listePilotes[i].point += 12;}
-            if(i = 4){listePilotes[i].point += 10;}
-            if(i = 5){listePilotes[i].point += 8;}
-            if(i = 6){listePilotes[i].point += 6;}
-            if(i = 7){listePilotes[i].point += 4;}
-            if(i = 8){listePilotes[i].point += 2;}
-            if(i = 9){listePilotes[i].point += 1;}
-            //if((i <= 9 )&& (listePilotes[21].temps = listePilotes[i].temps)){listePilotes[i].point += 1;}
-            if((i>9)){listePilotes[i].point += 0;}
-        }*/
+        listePilotes[0].point += 25;
+        listePilotes[1].point += 18;
+        listePilotes[2].point += 15;
+        listePilotes[3].point += 12;
+        listePilotes[4].point += 10;
+        listePilotes[5].point += 8;
+        listePilotes[6].point += 6;
+        listePilotes[7].point += 4;
+        listePilotes[8].point += 2;
+        listePilotes[9].point += 1;
+        for(int i = 0 ; i<10 ;i++){
+            printf("%d , %d , %d \n",i , listePilotes[21].temps , listePilotes[i].meilleurTemps);
+            if((listePilotes[21].temps = listePilotes[i].meilleurTemps)){listePilotes[i].point += 1;}
+        }
         affichePoint(listePilotes,20);
 
    sem_destroy(&semaphore);
