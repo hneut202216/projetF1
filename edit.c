@@ -13,7 +13,7 @@
 #include <semaphore.h>
 
 #include "structure.h"
-#include "afiichage.c"
+#include "afiichage.h"
 
 void remiseAZero(struct Pilote *pilotes, int taille) {
     for (int i = 0; i < taille; ++i) {
@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
             }
         }
         qsort(listePilotes, 20-nombreQ, sizeof(struct Pilote), compare);
-        afficherDonnees(listePilotes, 20-nombreQ);
+        afficherDonnees(listePilotes, 20-nombreQ,i+3);
         
         }
         printf("Qualif : %d",j+1);
@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
         tempsEnMoins +=2;
         afficheMeilleurTemps(listePilotes,2);
     }
-   afficherDonnees(listePilotes,20);
+   afficherDonnees(listePilotes,20,4);
    printf("Qualif terminé\n");
    sem_destroy(&semaphore);
    shmdt(listePilotes);

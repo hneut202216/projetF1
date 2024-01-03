@@ -10,6 +10,7 @@ struct Course
     char taille[10];
     char gp[200];
     char date[100];
+    int tour;
 };
 
 struct Pilote
@@ -23,6 +24,9 @@ struct Pilote
     int temps;
     int tempsTour[3];
     int nbrTour;
+    int bestTemps;
+    int pointPilote;
+
 };
 
 #endif

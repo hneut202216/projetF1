@@ -1,3 +1,6 @@
+#ifndef TRANSIT_H
+#define TRANSIT_H
+
 
 #include <stdio.h>
 #include <string.h>
@@ -39,3 +42,5 @@ char* sector_time_format(int sector_time){
 
     return formatted_time;
 }
+
+#endif
