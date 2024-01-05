@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
     struct Pilote *listePilotes = shmat(shmid, 0, 0);
 
     fgets(listeTempPilote, tailleListePilote, filePilote);
-    remiseAZero(listePilotes,21);
+    remiseAZero(listePilotes,22);
     int indicePilote = 0;
     int trash;
     while (fgets(listeTempPilote, tailleListePilote, filePilote) != NULL)
@@ -192,16 +192,11 @@ for(int z = 0;z <indice;z++){
 /*-------------------------------------------Essaie---------------------------------------------------------*/
 for(int b = bessaie; b<3;b++){
         
-            for(int k = 0; k < 21 ; k++){
-                        listePilotes[k].temps = 0;
-                        listePilotes[k].tempsTour[0] = 0;
-                        listePilotes[k].tempsTour[1] = 0;
-                        listePilotes[k].tempsTour[2] = 0;
-
-            }
+            
         
         for (int o = 0; o < 6 ; o++)
         {
+            usleep(500000);
             for (int i = 0; i < indicePilote; i++){
             // sleep(10);
             int totalF = 0;
@@ -224,7 +219,7 @@ for(int b = bessaie; b<3;b++){
                 
                 }
                 if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
-                if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
+                if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
                 sem_post(&semaphore);
                 return 0;
             }
@@ -249,11 +244,12 @@ for(int b = bessaie; b<3;b++){
         qsort(listePilotes, 20, sizeof(struct Pilote), compare);
         afficherDonnees(listePilotes, 20,b);
         
+        
         }
         //printf("Qualif : %d",j+1);
         }
         
-        afficheMeilleurTemps(listePilotes,2);
+        afficheMeilleurTemps(listePilotes,3);
         /*while(accessQ != 1){
             
             printf("écrivez 1 si vous voulez terminer la qualification %d :",j+1);
@@ -261,19 +257,26 @@ for(int b = bessaie; b<3;b++){
 
             }*/
             sleep(4);
+        for(int k = 0; k < 21 ; k++){
+                        listePilotes[k].temps = 0;
+                        listePilotes[k].tempsTour[0] = 0;
+                        listePilotes[k].tempsTour[1] = 0;
+                        listePilotes[k].tempsTour[2] = 0;
+                        
+
+            }
+        
+            listePilotes[21].temps = 0;
+            listePilotes[21].tempsTour[0] = 0;
+            listePilotes[21].tempsTour[1] = 0;
+            listePilotes[21].tempsTour[2] = 0;
     }
 
 /*------------------------------------------------Qualification ----------------------------------------------------*/
     //int accessQ = 0;
     for(int j = jqualif; j<3;j++){
         //accessQ = 0;
-            for(int k = 0; k < 15-nombreQ ; k++){
-                        listePilotes[k].temps = 0;
-                        listePilotes[k].tempsTour[0] = 0;
-                        listePilotes[k].tempsTour[1] = 0;
-                        listePilotes[k].tempsTour[2] = 0;
-
-            }
+            
         
         for (int o = 0; o < 8 - tempsEnMoins; o++)
         {
@@ -300,7 +303,7 @@ for(int b = bessaie; b<3;b++){
                 
                 }
                 if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
-                if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
+                if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
                 sem_post(&semaphore);
                 return 0;
             }
@@ -324,20 +327,27 @@ for(int b = bessaie; b<3;b++){
         }
         qsort(listePilotes, 20-nombreQ, sizeof(struct Pilote), compare);
         afficherDonnees(listePilotes, 20-nombreQ,j+3);
+        afficheMeilleurTemps(listePilotes,3);
         
         }
         //printf("Qualif : %d",j+1);
         }
         if(nombreQ < 10){nombreQ+=5;}
         tempsEnMoins +=2;
-        afficheMeilleurTemps(listePilotes,2);
+
         /*while(accessQ != 1){
             
             printf("écrivez 1 si vous voulez terminer la qualification %d :",j+1);
             scanf("%d",&accessQ);
 
             }*/
-            
+            for(int k = 0; k < 15-nombreQ ; k++){
+                        listePilotes[k].temps = 0;
+                        listePilotes[k].tempsTour[0] = 0;
+                        listePilotes[k].tempsTour[1] = 0;
+                        listePilotes[k].tempsTour[2] = 0;
+
+            }
             listePilotes[21].temps = 0;
             listePilotes[21].tempsTour[0] = 0;
             listePilotes[21].tempsTour[1] = 0;
@@ -345,7 +355,8 @@ for(int b = bessaie; b<3;b++){
             sleep(4);
     }
    afficherDonnees(listePilotes,20,6);
-   printf("Qualif terminé\n");
+   afficheMeilleurTemps(listePilotes,3);
+   
    /*printf("écrivez 1 si vous voulez terminer la qualification la course:");
             scanf("%d",&accessQ);
 
@@ -403,7 +414,7 @@ for(int b = bessaie; b<3;b++){
             usleep(500000);
             qsort(listePilotes, 20, sizeof(struct Pilote), compare);
             afficherDonnees(listePilotes, 20,6);
-            afficheMeilleurTemps(listePilotes, 2);
+            afficheMeilleurTemps(listePilotes, 3);
         }
     listePilotes[0].pointPilote += 25;
     listePilotes[1].pointPilote += 18;

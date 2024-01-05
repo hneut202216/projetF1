@@ -88,7 +88,7 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
     
     printf("\n");
 
-    /*    
+       
         printf("+");
     for (int j = 0; j < colonnes; ++j) {
         for (int k = 0; k < largeurs[j] + 1; ++k) {
@@ -96,35 +96,35 @@ void afficheMeilleurTemps(struct Pilote pilotes[],int lignes){
         }
         printf("+");
     }
-    //printf("\n|");
+    printf("\n|");
 
     for(int i = 0;i<20;i++){
         if(pilotes[i].bestTemps == pilotes[21].temps){
-            printf("%s",pilotes[i].nom);
+            printf("%-*s ",largeurs[0],pilotes[i].nom);
 
         }
     }
     for(int i = 0;i<20;i++){
         if(pilotes[i].tempsTour[0] == pilotes[21].tempsTour[0]){
-            printf("|%s",pilotes[i].nom);
+            printf("|%-*s ",largeurs[1],pilotes[i].nom);
 
         }
     }
     for(int i = 0;i<20;i++){
         if(pilotes[i].tempsTour[1] == pilotes[21].tempsTour[1]){
-            printf("|%s",pilotes[i].nom);
+            printf("|%-*s ",largeurs[2],pilotes[i].nom);
 
         }
     }
     for(int i = 0;i<20;i++){
         if(pilotes[i].tempsTour[2] == pilotes[21].tempsTour[2]){
-            printf("|%s",pilotes[i].nom);
+            printf("|%-*s ",largeurs[3],pilotes[i].nom);
 
         }
-    }*/
+    }
 
-        
-        printf("+");
+    
+        printf("|\n+");
     for (int j = 0; j < colonnes; ++j) {
         for (int k = 0; k < largeurs[j] + 1; ++k) {
             printf("-");
