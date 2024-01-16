@@ -26,7 +26,7 @@ int compare(const void *a, const void *b) {
     
     // Comparaison par le nombre de tours
     if (piloteA->nbrTour != piloteB->nbrTour) {
-        return piloteA->nbrTour - piloteB->nbrTour;
+        return piloteB->nbrTour - piloteA->nbrTour;
     } else {
         // En cas d'égalité du nombre de tours, comparer par le temps
         if (piloteA->temps == 0 || piloteB->temps == 0) {
@@ -188,15 +188,15 @@ for(int z = 0;z <indice;z++){
 
     }
 
-
 /*-------------------------------------------Essaie---------------------------------------------------------*/
+
+int choixE;
 for(int b = bessaie; b<3;b++){
-        
-            
         
         for (int o = 0; o < 6 ; o++)
         {
             usleep(500000);
+            
             for (int i = 0; i < indicePilote; i++){
             // sleep(10);
             int totalF = 0;
@@ -219,6 +219,7 @@ for(int b = bessaie; b<3;b++){
                 
                 }
                 if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
+                if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
                 if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
                 sem_post(&semaphore);
                 return 0;
@@ -229,13 +230,12 @@ for(int b = bessaie; b<3;b++){
                 printf("pas bon erreur");
                 return -1;
             }
-            else
-            {
-                 sem_wait(&semaphore);
+            
+            sem_wait(&semaphore);
 
-                sem_post(&semaphore);
+            sem_post(&semaphore);
                 
-            }
+        
         while(p_id == waitpid(-1,NULL,0)){
             if(errno == ECHILD){
                 break;
@@ -250,41 +250,54 @@ for(int b = bessaie; b<3;b++){
         }
         
         afficheMeilleurTemps(listePilotes,3);
-        /*while(accessQ != 1){
+        while(choixE != 1){
             
-            printf("écrivez 1 si vous voulez terminer la qualification %d :",j+1);
-            scanf("%d",&accessQ);
+            printf("écrivez 1 si vous voulez terminer l'essaie' %d :",b+1);
+            scanf("%d",&choixE);
 
-            }*/
-            sleep(4);
+            }
         for(int k = 0; k < 21 ; k++){
                         listePilotes[k].temps = 0;
                         listePilotes[k].tempsTour[0] = 0;
                         listePilotes[k].tempsTour[1] = 0;
                         listePilotes[k].tempsTour[2] = 0;
-                        
+                        listePilotes[k].bestTemps = 0;
+           
 
             }
         
-            listePilotes[21].temps = 0;
-            listePilotes[21].tempsTour[0] = 0;
-            listePilotes[21].tempsTour[1] = 0;
-            listePilotes[21].tempsTour[2] = 0;
+        listePilotes[21].temps = 0;
+        listePilotes[21].tempsTour[0] = 0;
+        listePilotes[21].tempsTour[1] = 0;
+        listePilotes[21].tempsTour[2] = 0;
+        choixE = 0;
+
+       /* while (choixYes != "oui" || b < 2)
+        {
+            printf("Voulez vous faire l'essaie %d. Répondez par oui/non!!",b+2);
+            scanf("%c",choixYes);
+            if(choixYes == "non"){
+                b +=1;
+            }
+        }*/
+        
+
     }
 
 /*------------------------------------------------Qualification ----------------------------------------------------*/
-    //int accessQ = 0;
+    int choixQ;
     for(int j = jqualif; j<3;j++){
-        //accessQ = 0;
+        
             
         
-        for (int o = 0; o < 8 - tempsEnMoins; o++)
+        for (int o = 0; o < 6 - tempsEnMoins; o++)
         {
+            usleep(500000);
             for (int i = 0; i < indicePilote - nombreQ; i++){
             // sleep(10);
             int totalF = 0;
             int a = 0;
-            usleep(500000);
+            
             p_id = fork();
             if (p_id == 0){
                 srand(time(NULL)*getpid());
@@ -303,7 +316,9 @@ for(int b = bessaie; b<3;b++){
                 
                 }
                 if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
-                if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
+                if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
+                if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}  
+                listePilotes[i].nbrTour +=1;
                 sem_post(&semaphore);
                 return 0;
             }
@@ -335,33 +350,36 @@ for(int b = bessaie; b<3;b++){
         if(nombreQ < 10){nombreQ+=5;}
         tempsEnMoins +=2;
 
-        /*while(accessQ != 1){
+        while(choixQ != 1){
             
             printf("écrivez 1 si vous voulez terminer la qualification %d :",j+1);
-            scanf("%d",&accessQ);
+            scanf("%d",&choixQ);
 
-            }*/
+            }
             for(int k = 0; k < 15-nombreQ ; k++){
                         listePilotes[k].temps = 0;
                         listePilotes[k].tempsTour[0] = 0;
                         listePilotes[k].tempsTour[1] = 0;
                         listePilotes[k].tempsTour[2] = 0;
+                        listePilotes[k].bestTemps = 0;
+                        listePilotes[k].nbrTour = 0;
 
             }
             listePilotes[21].temps = 0;
             listePilotes[21].tempsTour[0] = 0;
             listePilotes[21].tempsTour[1] = 0;
             listePilotes[21].tempsTour[2] = 0;
-            sleep(4);
+            choixQ = 0;
+
     }
    afficherDonnees(listePilotes,20,6);
    afficheMeilleurTemps(listePilotes,3);
    
-   /*printf("écrivez 1 si vous voulez terminer la qualification la course:");
-            scanf("%d",&accessQ);
-
+        while(choixQ != 1){
+            printf("Fin de la qualification!\nécrivez 1 si vous voulez terminer la qualification de la course:");
+            scanf("%d",&choixQ);
+        }
             
-            accessQ = 0;*/
 
 /*------------------------------------------------Course---------------------------------------------------*/
 
