@@ -195,7 +195,7 @@ for(int b = bessaie; b<3;b++){
         
         for (int o = 0; o < 6 ; o++)
         {
-            usleep(500000);
+            
             
             for (int i = 0; i < indicePilote; i++){
             // sleep(10);
@@ -221,6 +221,7 @@ for(int b = bessaie; b<3;b++){
                 if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
                 if(listePilotes[i].temps > totalF || listePilotes[i].temps == 0){listePilotes[i].temps = totalF;}
                 if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
+                listePilotes[i].nbrTour += 1 ;
                 sem_post(&semaphore);
                 return 0;
             }
@@ -230,24 +231,22 @@ for(int b = bessaie; b<3;b++){
                 printf("pas bon erreur");
                 return -1;
             }
-            
-            sem_wait(&semaphore);
-
-            sem_post(&semaphore);
-                
+             
         
         while(p_id == waitpid(-1,NULL,0)){
             if(errno == ECHILD){
                 break;
             }
         }
-        qsort(listePilotes, 20, sizeof(struct Pilote), compare);
-        afficherDonnees(listePilotes, 20,b);
+        
         
         
         }
         //printf("Qualif : %d",j+1);
+        //usleep(500000);
         }
+        qsort(listePilotes, 20, sizeof(struct Pilote), compare);
+        afficherDonnees(listePilotes, 20,b);
         
         afficheMeilleurTemps(listePilotes,3);
         while(choixE != 1){
@@ -262,6 +261,7 @@ for(int b = bessaie; b<3;b++){
                         listePilotes[k].tempsTour[1] = 0;
                         listePilotes[k].tempsTour[2] = 0;
                         listePilotes[k].bestTemps = 0;
+                        listePilotes[k].nbrTour = 0;
            
 
             }
@@ -328,13 +328,7 @@ for(int b = bessaie; b<3;b++){
                 printf("pas bon erreur");
                 return -1;
             }
-            else
-            {
-                 sem_wait(&semaphore);
-
-                sem_post(&semaphore);
-                
-            }
+            
         while(p_id == waitpid(-1,NULL,0)){
             if(errno == ECHILD){
                 break;
@@ -345,9 +339,10 @@ for(int b = bessaie; b<3;b++){
         afficheMeilleurTemps(listePilotes,3);
         
         }
+        
         //printf("Qualif : %d",j+1);
         }
-        if(nombreQ < 10){nombreQ+=5;}
+        if(nombreQ < 15){nombreQ+=5;}
         tempsEnMoins +=2;
 
         while(choixQ != 1){
@@ -362,8 +357,12 @@ for(int b = bessaie; b<3;b++){
                         listePilotes[k].tempsTour[1] = 0;
                         listePilotes[k].tempsTour[2] = 0;
                         listePilotes[k].bestTemps = 0;
-                        listePilotes[k].nbrTour = 0;
+                        
 
+            }
+
+            for(int y = 0; y < 20 ; y++){
+                listePilotes[y].nbrTour = 0;
             }
             listePilotes[21].temps = 0;
             listePilotes[21].tempsTour[0] = 0;
@@ -373,7 +372,7 @@ for(int b = bessaie; b<3;b++){
 
     }
    afficherDonnees(listePilotes,20,6);
-   afficheMeilleurTemps(listePilotes,3);
+   //afficheMeilleurTemps(listePilotes,3);
    
         while(choixQ != 1){
             printf("Fin de la qualification!\nécrivez 1 si vous voulez terminer la qualification de la course:");
@@ -417,10 +416,6 @@ for(int b = bessaie; b<3;b++){
                     printf("pas bon erreur");
                     return -1;
                 }
-                    sem_wait(&semaphore);
-
-                    sem_post(&semaphore);
-                    
             while(p_id == waitpid(-1,NULL,0)){
                 if(errno == ECHILD){
                     break;
@@ -432,8 +427,9 @@ for(int b = bessaie; b<3;b++){
             usleep(500000);
             qsort(listePilotes, 20, sizeof(struct Pilote), compare);
             afficherDonnees(listePilotes, 20,6);
-            afficheMeilleurTemps(listePilotes, 3);
+            
         }
+        afficheMeilleurTemps(listePilotes, 3);
     listePilotes[0].pointPilote += 25;
     listePilotes[1].pointPilote += 18;
     listePilotes[2].pointPilote += 15;
