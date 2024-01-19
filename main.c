@@ -404,7 +404,7 @@ for(int b = bessaie; b<3;b++){
                     a++;
                     }
                     if(listePilotes[21].temps > totalF || listePilotes[21].temps == 0){listePilotes[21].temps = totalF;}
-                    if(listePilotes[i].bestTemps > totalF || listePilotes[21].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
+                    if(listePilotes[i].bestTemps > totalF || listePilotes[i].bestTemps == 0){listePilotes[i].bestTemps = totalF;}
                     listePilotes[i].temps += totalF;
                     listePilotes[i].nbrTour += 1;
                     sem_post(&semaphore);
